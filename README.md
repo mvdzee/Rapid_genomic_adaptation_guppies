@@ -4,6 +4,8 @@ To accompany FIBR paper
 This repository contains various scripts that were used for population genomics analyses in  
 **Title of paper**
 
+Raw reads were processed with a set of in-house scripts published in Fraser et al. (2020) - Improved reference genome uncovers novel sex-linked regions in the guppy (Poecilia reticulata)
+
 Download the scripts into a folder (FIBR_ms) with the following sub-folders: 
  1. scripts (this is where the scripts go)  
 
