@@ -41,14 +41,15 @@ Selscan iHH12 -
 
 #### Popgenome results   
 On the HPC, in the folder with the outputs, run the following to concatenate the files per statistic:  
-```for stat in fst pi td; 
+```
+for stat in fst pi td; 
    do     
    for file in *${stat}*out;
       do
       awk 'FNR==1 && NR!=1 { while (/^chrom+/) getline; } 1 {print}' *${stat}*out > FIBR_${stat}.txt;
       done;
    done
-   ```  
+ ```  
  Now move the output files to the main folder FIBR_ms/data/popgenome  
  
  To get FST means and medians run: ```fst_global.R```  
@@ -58,7 +59,8 @@ On the HPC, in the folder with the outputs, run the following to concatenate the
 #### VCFtools results  
 *Heterozygosity*  
 On the HPC, in the folder with the raw output, run the following:  
-```for POP in GHP GLP IC IT ILL IUL
+```
+for POP in GHP GLP IC IT ILL IUL
    do
    cat ${POP}_het.hwe | tr ‘/’ ‘\t’ > ${POP}_het.txt
    done
@@ -68,7 +70,8 @@ and then run: ```Het_windows.R```
 
 *Allele frequency*  
 On the HPC, in the folder with the raw output, run the following:  
-```for POP in GHP GLP IC IT ILL IUL
+```
+for POP in GHP GLP IC IT ILL IUL
    do
    cat ${POP}_AF.frq | tr ':' '\t' | sed '1s/^.*$/CHROM\tPOS\tN_ALLELES\tN_CHR\tREF\tREF_FRQ\tALT\tALT_FRQ/' > ${POP}_AF.txt
    done
