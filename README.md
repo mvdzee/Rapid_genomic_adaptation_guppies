@@ -43,8 +43,8 @@ Download the scripts into a folder (FIBR_ms) with the following sub-folders:
     - xpehh  
     - ihh12 
 
-### Processing per analysis  
-#### Popgenome  
+## Processing per analysis  
+### Popgenome  
 **To obtain raw data**  
 Run these scripts on the HPC to get Fst, nuc.div. and Tajima's D:  
 FST - ```popgenome.R```  
@@ -69,7 +69,7 @@ for stat in fst pi td;
  To process Tajima's D run: ```TD_windows.R```  
  To process π run: ```Pi_windows.R```  
 
-#### VCFtools  
+### VCFtools  
 **To obtain raw data**  
 Run these scripts on the HPC:  
 Heterozygosity - ```heterozygosity_vcftools.sh```  
@@ -105,7 +105,7 @@ To create the plot seen in fig 1D, run
 ``` plot_genomewide_stats.R ```  
 
 
-#### PCA
+### PCA
 **To obtain the raw data**  
 Run this scripts on the HPC:  
 PCA - ```plink_PCA.sh```  
@@ -115,7 +115,7 @@ Move the eigenvector and eigenvalue files from the HPC to the local FIBR_ms/data
 Then run ```PCA_plot.R``` to create the plot in figure 1B
 
 
-#### Runs of homozygosity
+### Runs of homozygosity
 This analysis requires phased VCFs  
 
 **To obtain the raw data**  
@@ -127,10 +127,45 @@ Move the output files from the HPC output folder to the local FIBR_ms/data/ROH
 To process the files and create the plot seen in figure 1C run: ```ROH_plots.R``` 
 
 
-#### Selscan genome scans
+### Selscan genome scans
 This analysis requires phased VCFs  
 
 **To obtain the raw data**  
 Run this scripts on the HPC to get XP-EHH and iHH12:  
 Selscan - ```selscan.sh```  
 
+**To process the raw data**  
+*XP-EHH*
+On the HPC, in the folder with the XP-EHH outputs, run the following to concatenate the files per population:  
+```
+for POP in C T LL UL; 
+   do     
+   for file in GH_${POP}*out.norm;
+      do
+      awk 'FNR==1 && NR!=1 { while (/^id+/) getline; } 1 {print}' GH_${POP}*out.norm > GH_${POP}_XPEHH.txt;
+      done;
+   done
+ ```  
+ 
+ Move the concatenated file from the HPC to the local data/selscan/xpehh folder.
+ In R, run ```XPEHH_outliers.R```  
+ This script will output the outliers per introduced population.  
+ 
+ *iHH12*
+On the HPC, in the folder with the iHH12 outputs, run the following to concatenate the files per population:  
+```
+for POP in GH C T LL UL; 
+   do     
+   for file in ${POP}*out.norm;
+      do
+      awk 'FNR==1 && NR!=1 { while (/^id+/) getline; } 1 {print}' ${POP}*out.norm > ${POP}_iHH12.txt;
+      done;
+   done
+ ```  
+ 
+ Move the concatenated file from the HPC to the local data/selscan/ihh12 folder.
+ In R, run ```ihh12_outliers.R```  
+ This script will output the outliers per introduced population.
+
+
+To plot the selscan results:
