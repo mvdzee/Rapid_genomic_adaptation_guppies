@@ -6,6 +6,10 @@ This repository contains various scripts that were used for population genomics 
 
 Raw reads were processed with a set of in-house scripts published in Fraser et al. (2020) - Improved reference genome uncovers novel sex-linked regions in the guppy (Poecilia reticulata)
 
+VCFs were phased using the following script:  
+```phase_vcf.sh```  
+For this you will need the final filtered bam files.  
+
 Download the scripts into a folder (FIBR_ms) with the following sub-folders: 
  1. scripts (this is where the scripts go)  
 
@@ -13,6 +17,8 @@ Download the scripts into a folder (FIBR_ms) with the following sub-folders:
   - popgenome  
   - heterozygosity  
   - allele_freq  
+  - ROH  
+  - PCA  
   - selscan  
     - xpehh  
     - ihh12  
@@ -21,25 +27,32 @@ Download the scripts into a folder (FIBR_ms) with the following sub-folders:
   - popgenome  
   - heterozygosity  
   - allele_freq  
+  - ROH  
+  - PCA  
   - selscan  
     - xpehh  
     - ihh12 
     
  4. figures  
+  - popgenome  
+  - heterozygosity  
+  - allele_freq  
+  - ROH  
+  - PCA  
+  - selscan  
+    - xpehh  
+    - ihh12 
 
-### To obtain raw data for all analyses  
-These scripts are run on the HPC where each analysis has its own folder (so one for popgenome, one for heterozygosity, one for allele frequency and one for selscan)
+### Processing per analysis  
+#### Popgenome  
+**To obtain raw data**  
+Run these scripts on the HPC to get Fst, nuc.div. and Tajima's D:  
 FST - ```popgenome.R```  
 Tajima'S - ```popgenome.R```  
 Nucleotide diversity (π) - ```popgenome.R```  
-Heterozygosity - ```heterozygosity_vcftools.sh```  
-Allele frequency - ```allele_freq_vcftools.sh```  
-Selscan XP-EHH -  
-Selscan iHH12 - 
+These scripts can be run by this shell:  ```popgenome.sh```  
 
-### To process raw data  
-
-#### Popgenome results   
+**To process the raw data**  
 On the HPC, in the folder with the outputs, run the following to concatenate the files per statistic:  
 ```
 for stat in fst pi td; 
@@ -55,8 +68,14 @@ for stat in fst pi td;
  To get FST means and medians run: ```fst_global.R```  
  To process Tajima's D run: ```TD_windows.R```  
  To process π run: ```Pi_windows.R```  
- 
-#### VCFtools results  
+
+#### VCFtools  
+**To obtain raw data**  
+Run these scripts on the HPC:  
+Heterozygosity - ```heterozygosity_vcftools.sh```  
+Allele frequency - ```allele_freq_vcftools.sh```  
+
+**To process the data**  
 *Heterozygosity*  
 On the HPC, in the folder with the raw output, run the following:  
 ```
@@ -81,4 +100,37 @@ and then run: ```AF_windows.R```  to calculate (absolute) delta allele frequenci
 
 To calculate fixed/unchanged AFs between GHP and the LP populations run: ```fixed_AFs.R```  
 
-#### Plot neutral stats 
+*Plot genome-wide stats*  
+To create the plot seen in fig 1D, run  
+``` plot_genomewide_stats.R ```  
+
+
+#### PCA
+**To obtain the raw data**  
+Run this scripts on the HPC:  
+PCA - ```plink_PCA.sh```  
+
+**To plot the PCA**  
+Move the eigenvector and eigenvalue files from the HPC to the local FIBR_ms/data/PCA
+Then run ```PCA_plot.R``` to create the plot in figure 1B
+
+
+#### Runs of homozygosity
+This analysis requires phased VCFs  
+
+**To obtain the raw data**  
+Run these scripts on the HPC to get ROH per individual per population:  
+Runs of homozygosity - ```plink_ROH.sh```  
+
+**To process the raw data**  
+Move the output files from the HPC output folder to the local FIBR_ms/data/ROH
+To process the files and create the plot seen in figure 1C run: ```ROH_plots.R``` 
+
+
+#### Selscan genome scans
+This analysis requires phased VCFs  
+
+**To obtain the raw data**  
+Run this scripts on the HPC to get XP-EHH and iHH12:  
+Selscan - ```selscan.sh```  
+
