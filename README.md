@@ -135,7 +135,7 @@ Run this scripts on the HPC to get XP-EHH and iHH12:
 Selscan - ```selscan.sh```  
 
 **To process the raw data**  
-*XP-EHH*
+*XP-EHH*  
 On the HPC, in the folder with the XP-EHH outputs, run the following to concatenate the files per population:  
 ```
 for POP in C T LL UL; 
@@ -151,7 +151,7 @@ for POP in C T LL UL;
  In R, run ```XPEHH_outliers.R```  
  This script will output the outliers per introduced population.  
  
- *iHH12*
+ *iHH12*  
 On the HPC, in the folder with the iHH12 outputs, run the following to concatenate the files per population:  
 ```
 for POP in GH C T LL UL; 
@@ -169,3 +169,5 @@ for POP in GH C T LL UL;
 
 
 To plot the selscan results:
+Run the following script: ```selscan_plots.R```  
+This will create the plots seen in figure 2.  
