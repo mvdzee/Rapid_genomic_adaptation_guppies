@@ -22,6 +22,7 @@ Download the scripts into a folder (FIBR_ms) with the following sub-folders:
   - selscan  
     - xpehh  
     - ihh12  
+  - AF-vapeR  
 
  3. output  
   - popgenome  
@@ -32,6 +33,7 @@ Download the scripts into a folder (FIBR_ms) with the following sub-folders:
   - selscan  
     - xpehh  
     - ihh12 
+  - AF-vapeR  
     
  4. figures  
   - popgenome  
@@ -42,6 +44,7 @@ Download the scripts into a folder (FIBR_ms) with the following sub-folders:
   - selscan  
     - xpehh  
     - ihh12 
+  - AF-vapeR  
 
 ## Processing per analysis  
 ### Popgenome  
@@ -167,7 +170,16 @@ for POP in GH C T LL UL;
  In R, run ```ihh12_outliers.R```  
  This script will output the outliers per introduced population.
 
-
 To plot the selscan results:
 Run the following script: ```selscan_plots.R```  
 This will create the plots seen in figure 2.  
+
+
+### AF-vapeR  
+There is a more detailed description of this software available on *jims github*.  
+**To obtain the raw data and process**  
+For this analysis you will need the scripts:  
+```AF_vapeR_chrom.R``` and ```AF_vapeR_functions.R``` in the same folder   
+You will also need to have BCFtools installed. For a version without the use of BCFtools please see *jims github*.  
+
+In RStudio, run through the ```AF_vapeR_chrom.R``` to get the results and figures.  
