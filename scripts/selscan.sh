@@ -27,6 +27,7 @@ done <  $samples
 for i in ${arr[@]}
 do
 ~/lustre/bin/plink --vcf $VCFDIR/chroms/${POP}_${i}_shapeit_beagle.vcf.gz --recode --out $VCFDIR/chroms/${POP}_${i}_shapeit_beagle.vcf.gz
+cat $VCFDIR/chroms/${POP}_${i}_shapeit_beagle.vcf.gz.map | awk -v var1="$i" -v var2="$POP" '{print var1"\t"var1":"$4"\t"$4"\t"$4}' > test && mv test $VCFDIR/chroms/${POP}_${i}_shapeit_beagle.vcf.gz.map
 done
 
 # calculate iHH12
