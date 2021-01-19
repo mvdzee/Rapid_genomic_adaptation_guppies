@@ -119,7 +119,7 @@ Then run ```PCA_plot.R``` to create the plot in figure 1B
 
 
 ### Runs of homozygosity
-This analysis requires phased VCFs  
+This analysis requires phased VCFs!!  
 
 **To obtain the raw data**  
 Run these scripts on the HPC to get ROH per individual per population:  
@@ -131,10 +131,10 @@ To process the files and create the plot seen in figure 1C run: ```ROH_plots.R``
 
 
 ### Selscan genome scans
-This analysis requires phased VCFs  
+This analysis requires phased VCFs!!  
 
 **To obtain the raw data**  
-Run this scripts on the HPC to get XP-EHH and iHH12:  
+Run this scripts on the HPC to get the required plink .map files in the correct format as well as XP-EHH and iHH12:  
 Selscan - ```selscan.sh```  
 
 **To process the raw data**  
@@ -150,11 +150,11 @@ for POP in C T LL UL;
    done
  ```  
  
- Move the concatenated file from the HPC to the local data/selscan/xpehh folder.
- In R, run ```XPEHH_outliers.R```  
- This script will output the outliers per introduced population.  
+Move the concatenated file from the HPC to the local data/selscan/xpehh folder.
+In R, run ```XPEHH_outliers.R```  
+This script will output the outliers per introduced population.  
  
- *iHH12*  
+*iHH12*  
 On the HPC, in the folder with the iHH12 outputs, run the following to concatenate the files per population:  
 ```
 for POP in GH C T LL UL; 
@@ -166,9 +166,9 @@ for POP in GH C T LL UL;
    done
  ```  
  
- Move the concatenated file from the HPC to the local data/selscan/ihh12 folder.
- In R, run ```ihh12_outliers.R```  
- This script will output the outliers per introduced population.
+Move the concatenated file from the HPC to the local data/selscan/ihh12 folder.
+In R, run ```ihh12_outliers.R```  
+This script will output the outliers per introduced population.
 
 To plot the selscan results:
 Run the following script: ```selscan_plots.R```  
