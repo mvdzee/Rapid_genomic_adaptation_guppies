@@ -2,7 +2,7 @@
 To accompany FIBR paper
 
 This repository contains various scripts that were used for population genomics analyses in  
-**Title of paper**
+**Rapid genomic adaptation in recently introduced populations of Trinidadian guppies (Poecilia reticulata)**
 
 Raw reads were processed with a set of in-house scripts published in Fraser et al. (2020) - Improved reference genome uncovers novel sex-linked regions in the guppy (Poecilia reticulata)
 
