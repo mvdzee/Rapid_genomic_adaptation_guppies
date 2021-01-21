@@ -179,10 +179,10 @@ This will create the plots seen in figure 2.
 
 
 ### AF-vapeR  
-There is a more detailed description of this software available on *jims github*.  
+There will a more detailed description of this software available on \*jims github\*.  
 **To obtain the raw data and process**  
 For this analysis you will need the scripts:  
 ```AF_vapeR_chrom.R``` and ```AF_vapeR_functions.R``` in the same folder   
-You will also need to have BCFtools installed. For a version without the use of BCFtools please see *jims github*.  
+You will also need to have BCFtools installed. For a version without the use of BCFtools please see \*jims github\*.  
 
 In RStudio, run through the ```AF_vapeR_chrom.R``` to get the results and figures.  
