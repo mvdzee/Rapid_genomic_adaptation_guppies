@@ -6,11 +6,13 @@ This repository contains various scripts that were used for population genomics 
 
 Raw reads were processed with a set of in-house scripts published in Fraser et al. (2020) - Improved reference genome uncovers novel sex-linked regions in the guppy (Poecilia reticulata)
 
-VCFs were phased using the following script:  
+All \*.sh scripts are written for SLURM based systems. Please change headers and batch format where necessary.
+
+For selscan and Runs of Homozygosity, VCFs were phased using the following script:  
 ```phase_vcf.sh```  
 For this you will need the final filtered bam files.  
 
-Download the scripts into a folder (FIBR_ms) with the following sub-folders: 
+Download the repo, it should have the following folders:
  1. scripts (this is where the scripts go)  
 
  2. data  
@@ -66,7 +68,7 @@ for stat in fst pi td;
       done;
    done
  ```  
- Now move the output files to the main folder FIBR_ms/data/popgenome  
+ Now move the output files to the main folder data/popgenome  
  
  To get FST means and medians run: ```fst_global.R```  
  To process Tajima's D run: ```TD_windows.R```  
@@ -87,8 +89,12 @@ for POP in GHP GLP IC IT ILL IUL
    cat ${POP}_het.hwe | tr ‘/’ ‘\t’ > ${POP}_het.txt
    done
 ```  
-Now move the output files to the main folder FIBR_ms/data/heterozygosity 
+Now move the output files to the main folder data/heterozygosity 
 and then run: ```Het_windows.R```  
+
+*Plot genome-wide stats*  
+To create the plot seen in fig 1D with values of expected heterozygosity, nucleotide diversity and Tajima's D, run  
+``` plot_genomewide_stats.R ```  
 
 *Allele frequency*  
 On the HPC, in the folder with the raw output, run the following:  
@@ -98,23 +104,20 @@ for POP in GHP GLP IC IT ILL IUL
    cat ${POP}_AF.frq | tr ':' '\t' | sed '1s/^.*$/CHROM\tPOS\tN_ALLELES\tN_CHR\tREF\tREF_FRQ\tALT\tALT_FRQ/' > ${POP}_AF.txt
    done
 ```  
-Now move the output files to the main folder FIBR_ms/data/allele_freq  
+Now move the \*.txt files to the main folder data/allele_freq  
 and then run: ```AF_windows.R```  to calculate (absolute) delta allele frequencies.  
 
 To calculate fixed/unchanged AFs between GHP and the LP populations run: ```fixed_AFs.R```  
-
-*Plot genome-wide stats*  
-To create the plot seen in fig 1D, run  
-``` plot_genomewide_stats.R ```  
 
 
 ### PCA
 **To obtain the raw data**  
 Run this scripts on the HPC:  
-PCA - ```plink_PCA.sh```  
+This script also prunes the VCF for linkage.  
+```plink_PCA.sh```  
 
 **To plot the PCA**  
-Move the eigenvector and eigenvalue files from the HPC to the local FIBR_ms/data/PCA
+Move the eigenvector and eigenvalue files from the HPC to the local data/PCA
 Then run ```PCA_plot.R``` to create the plot in figure 1B
 
 
@@ -134,7 +137,7 @@ To process the files and create the plot seen in figure 1C run: ```ROH_plots.R``
 This analysis requires phased VCFs!!  
 
 **To obtain the raw data**  
-Run this scripts on the HPC to get the required plink .map files in the correct format as well as XP-EHH and iHH12:  
+Run this scripts on the HPC to get the required plink \*.map files in the correct format as well as XP-EHH and iHH12:  
 Selscan - ```selscan.sh```  
 
 **To process the raw data**  
