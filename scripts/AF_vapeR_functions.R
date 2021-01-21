@@ -418,7 +418,7 @@ eigenval_plot <- function(eigen_res=NULL,
   plots <- lapply(colnames(eigenval_sums),function(val){
     
     p1 <- ggplot(plot_dd,aes(x=pos,y=plot_dd[,val]))+
-      geom_point()+
+      geom_line()+
       theme_bw()+
       labs(y=gsub("vector","value",val),x="Chr Position (Mb)")+
       ggtitle(val)+
@@ -608,26 +608,21 @@ eigenval_plot_genome <- function(eigen_res_list=NULL,
   plots <- lapply(grep("Eigen",colnames(total_plot_dd),value=T),function(val){
     
     p1 <- ggplot(total_plot_dd,aes(x=pos,y=total_plot_dd[,val]))+
-      geom_point(aes(col=chr_F))+
-      #geom_point(data=outs,aes(x=pos,y=total_plot_dd[,val]),col="#c082d8")+
+      geom_line()+
       theme_minimal()+
       labs(y=gsub("vector","value",val),x="Genome Position")+
       ggtitle(val)+
-      scale_color_manual(values = rep(c('#686566','grey'), 23)) +
-      theme(panel.grid = element_blank(),
-            legend.position = 'none',
-            axis.text=element_text(size=16),
+      theme(axis.text=element_text(size=16),
             axis.title = element_text(size=18),
-            title = element_text(size=18),
+            title = element_text(size=20),
             axis.text.x = element_blank(),
             axis.ticks.x = element_blank(),
             panel.spacing.x=unit(0.1, "lines"),
             strip.text = element_text(angle=90,hjust=1,size=14))+
       facet_wrap(~chr_F,nrow = 1,strip.position = "bottom",scales="free_x")
+    
     if(!(is.null(cutoffs))){
-      test<-total_plot_dd[total_plot_dd[,val] >= cutoffs[val],]
-      p1 <- p1 + geom_point(data=test,aes(x=pos,y=test[,val]),colour="#ffdb19",size=2.5)
-      #p1 <- p1 + geom_hline(yintercept=cutoffs[val],colour="red2")
+      p1 <- p1 + geom_hline(yintercept=cutoffs[val],colour="red2")
     }
   })
   names(plots) <- grep("Eigen",colnames(total_plot_dd),value=T)

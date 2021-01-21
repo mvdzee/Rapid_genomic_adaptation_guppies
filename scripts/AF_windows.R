@@ -18,7 +18,7 @@ ghp_minor$comp<-rep('GHP',nrow(ghp_minor))
 ### Read this in if re-doing something so you don't have to redo the function thing
 write.table(ghp_minor, "output/allele_freq/GHP_minor.txt", quote = F, sep = '\t', row.names = F)
 # if you nead to read in the minor alleles later
-#ghp_minor<-fread("output/allele_freq/GHP_minor.txt",header = T)
+ghp_minor<-fread("output/allele_freq/GHP_minor.txt",header = T)
 
 glp_af<-fread('data/allele_freq/GLP_AF.txt', header = T)
 glp_af<-glp_af[with(glp_af, order(CHROM,POS)), ]
@@ -33,7 +33,7 @@ glp_minor<-glp_minor[with(glp_minor, order(CHROM,POS)), ]
 glp_minor$comp<-rep('GLP',nrow(glp_minor))
 write.table(glp_minor, "output/allele_freq/GLP_minor.txt", quote = F, sep = '\t', row.names = F)
 # if you nead to read in the minor alleles later
-#glp_minor<-fread("output/allele_freq/GLP_minor.txt",header = T)
+glp_minor<-fread("output/allele_freq/GLP_minor.txt",header = T)
 
 ll_af<-fread('data/allele_freq/ILL_AF.txt', header = T)
 ll_af<-ll_af[with(ll_af, order(CHROM,POS)), ]
@@ -46,7 +46,7 @@ ll_minor<-ll_minor[with(ll_minor, order(CHROM,POS)), ]
 ll_minor$comp<-rep('ILL',nrow(ll_minor))
 write.table(ll_minor, "output/allele_freq/LL_minor.txt", quote = F, sep = '\t', row.names = F)
 # if you nead to read in the minor alleles later
-#ll_minor<-fread("output/LL_minor.txt",header=T)
+ll_minor<-fread("output/allele_freq/LL_minor.txt",header=T)
 
 ul_af<-fread('data/allele_freq/IUL_AF.txt', header = T)
 ul_af<-ul_af[with(ul_af, order(CHROM,POS)), ]
@@ -59,7 +59,7 @@ ul_minor<-ul_minor[with(ul_minor, order(CHROM,POS)), ]
 ul_minor$comp<-rep('IUL',nrow(ul_minor))
 write.table(ul_minor, "output/UL_minor.txt", quote = F, sep = '\t', row.names = F)
 # if you nead to read in the minor alleles later
-#ul_minor<-fread("output/UL_minor.txt",header=T)
+ul_minor<-fread("output/allele_freq/UL_minor.txt",header=T)
 
 c_af<-fread('data/allele_freq/IC_AF.txt', header = T)
 c_af<-c_af[with(c_af, order(CHROM,POS)), ]
@@ -72,7 +72,7 @@ c_minor<-c_minor[with(c_minor, order(CHROM,POS)), ]
 c_minor$comp<-rep('IC',nrow(c_minor))
 write.table(c_minor, "output/allele_freq/C_minor.txt", quote = F, sep = '\t', row.names = F)
 # if you nead to read in the minor alleles later
-#c_minor<-fread("output/C_minor.txt",header=T)
+c_minor<-fread("output/allele_freq/C_minor.txt",header=T)
 
 t_af<-fread('data/allele_freq/IT_AF.txt', header = T)
 t_af<-t_af[with(t_af, order(CHROM,POS)), ]
@@ -85,7 +85,7 @@ t_minor<-t_minor[with(t_minor, order(CHROM,POS)), ]
 t_minor$comp<-rep('IT',nrow(t_minor))
 write.table(t_minor, "output/allele_freq/T_minor.txt", quote = F, sep = '\t', row.names = F)
 # if you nead to read in the minor alleles later
-#t_minor<-fread("output/T_minor.txt",header=T)
+t_minor<-fread("output/allele_freq/T_minor.txt",header=T)
 
 
 ### calculate delta AFs
@@ -131,7 +131,7 @@ colnames(dGL)<-c('chrom','BP','delta_AF','comp')
 dGL$abs_AF<-abs(dGL$delta_AF)
 
 AF_all<-rbind(dLL,dUL,dC,dT,dGL)
-write.table(AF_all, "output/DAF_perSNP.txt", quote = F, sep = '\t', row.names = F)
+write.table(AF_all, "output/allele_freq/DAF_perSNP.txt", quote = F, sep = '\t', row.names = F)
 
 # Average into windows
 chrs<-unique(AF_all$chrom)
@@ -376,4 +376,4 @@ winds_GL2<-data.frame(rbindlist(mclapply(chrs,function(x){
 },mc.cores=3)))
 
 delta_AF2 <-rbind(winds_LL2,winds_UL2,winds_C2,winds_T2,winds_GL2)
-write.table(delta_AF, "output/allele_freq/DAF_Abs_windows.txt", quote = F, sep = '\t', row.names = F)
+write.table(delta_AF2, "output/allele_freq/DAF_Abs_windows.txt", quote = F, sep = '\t', row.names = F)

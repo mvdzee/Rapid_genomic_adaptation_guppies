@@ -1,5 +1,4 @@
-### Rscript to calculate Fst, nucleotide diversity and Tajima's D in PopGenome
-# Make sure the VCF file is bgzipped and tabix'ed
+### Rscript for popGenome Dxy ###
 library("PopGenome", lib.loc="/gpfs/ts0/home/mv323/lustre/bin")
 library(data.table)
 library(dplyr)
@@ -19,7 +18,7 @@ topos = chr_length[x,]$V2
 #Read in VCF
 vcf_file <- readVCF('/gpfs/ts0/home/mv323/lustre/start_up_data/FIBR/STAR/data/FIBR_gvcfs/FIBR_STAR_pop_SNP.gatk.bi.miss.maf.final.filtered.depth4.recode.vcf.gz', tid=tid, frompos = 1, topos = topos, numcols = 1000000, include.unknown=TRUE)
 
-### assign pops as they appear in your VCF ###
+### assign pops ###
 c_pop <- c('C1','C4','C6','C8','C9','C12','C13','C14','C15','C16','C17','C20','C21','C22','C23')
 gh_pop <- c('GH1','GH2','GH3','GH4','GH5','GH6','GH7','GH8','GH9','GH10','GH11','GH12','GH13','GH14','GH15','GH17','GH18','GH19','GH20')
 gl_pop <- c('GL1','GL2','GL5','GL6','GL7','GL8','GL9','GL10','GL11','GL12','GL13','GL14','GL15','GL16','GL17','GL18','GL19','GL20')
@@ -34,7 +33,7 @@ slide_vcf_file_75kb <- sliding.window.transform(vcf_file, 75000, 75000, type=2)
 ### do pop stats
 slide_vcf_file_75kb <- F_ST.stats(slide_vcf_file_75kb, mode="nucleotide")
 slide_vcf_file_75kb <- neutrality.stats(slide_vcf_file_75kb, FAST=TRUE)
-#slide_vcf_file_75kb <- diversity.stats.between(slide_vcf_file_75kb, nucleotide.mode=TRUE)
+slide_vcf_file_75kb <- diversity.stats.between(slide_vcf_file_75kb, nucleotide.mode=TRUE)
 slide_vcf_file_75kb <- detail.stats(slide_vcf_file_75kb,site.spectrum=TRUE)
 
 ### create output for 75kb files ###
@@ -60,7 +59,7 @@ calc_FST<-function(fst_list){
         } else {
         tmp['chrom']<-rep(tid,nrow(tmp))
         tmp['window']<-1:nrow(tmp)
-        tmp['window_start']<- (tmp$window-1)*75000
+        tmp['window_start']<- ((tmp$window-1)*75000)+1
         tmp['window_end']<- tmp$window*75000
         tmp<-tmp[,c(16:19,1:15)]
         }
@@ -83,7 +82,7 @@ calc_PI<-function(pi_list){
         } else {
         tmp['chrom']<-rep(tid,nrow(tmp))
         tmp['window']<-1:nrow(tmp)
-        tmp['window_start']<- (tmp$window-1)*75000
+        tmp['window_start']<- ((tmp$window-1)*75000)+1
         tmp['window_end']<- tmp$window*75000
         tmp<-tmp[,c(7:10,1:6)]
         }
@@ -105,7 +104,7 @@ calc_TD<-function(td_list){
         } else {
         tmp['chrom']<-rep(tid,nrow(tmp))
         tmp['window']<-1:nrow(tmp)
-        tmp['window_start']<- (tmp$window-1)*75000
+        tmp['window_start']<- ((tmp$window-1)*75000)+1
         tmp['window_end']<- tmp$window*75000
         tmp<-tmp[,c(7:10,1:6)]
         }

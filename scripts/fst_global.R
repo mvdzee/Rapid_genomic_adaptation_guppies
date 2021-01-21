@@ -7,7 +7,7 @@ fst<-read.table("data/popgenome/FIBR_Fst.txt", header = T)
 fst[,-c(1,2,3,4)][fst[,-c(1,2,3,4)] < 0] <- 0
 
 # remove NA from the data columns, adapt
-fst2<-na.omit(fst[,c(5:length(fst)])  
+fst2<-na.omit(fst[,c(5:length(fst))])  
 
 # these for loops calculate and print mean/median Fst for each pair wise population
 for(i in seq(from=5,to=ncol(fst),by=1)){

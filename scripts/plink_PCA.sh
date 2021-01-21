@@ -10,9 +10,8 @@
 #SBATCH --export=All
 #SBATCH -D .
 
-# this script is run on your HPC, so change header/paths accordingly
 
-# set variables & paths
+# this script prunes the vcf for linkage and calculates the eigenvalues/vectors
 vcfs=~/lustre/start_up_data/FIBR/STAR/data/FIBR_gvcfs
 out=/gpfs/ts0/home/mv323/lustre/start_up_data/people/mijke/STAR_analyses/FIBR/plink/PCA
 
@@ -31,7 +30,7 @@ out=/gpfs/ts0/home/mv323/lustre/start_up_data/people/mijke/STAR_analyses/FIBR/pl
 --recode vcf \
 --out $vcfs/pruned/FIBR_PCA_pruned
 
-### calculate eigenvecs & vals for the pruned vcf
+# ### calculate eigenvecs & vals for the pruned vcf
 /gpfs/ts0/home/mv323/lustre/bin/plink --vcf $vcfs/pruned/FIBR_PCA_pruned.vcf \
 --allow-extra-chr \
 --pca header tabs \

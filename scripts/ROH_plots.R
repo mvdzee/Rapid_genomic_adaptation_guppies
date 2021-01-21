@@ -10,12 +10,12 @@ library(cowplot)
 
 ### This script will process the ROH and create the plot seen in fig 1C
 ### Read in the data
-c_hom<-read.table("data/C_500K_1het.hom", header=T)
-t_hom<-read.table("data/T_500K_1het.hom", header=TRUE)
+c_hom<-read.table("data/ROH/C_500K_1het.hom", header=T)
+t_hom<-read.table("data/ROH/T_500K_1het.hom", header=TRUE)
 #glp_hom<-read.table("data/ROH/GLP_500K_1het.hom", header=TRUE)
-ghp_hom<-read.table("data/GHP_500K_1het.hom", header=TRUE)
-ll_hom<-read.table("data/ILL_500K_1het.hom", header=TRUE)
-ul_hom<-read.table("data/IUL_500K_1het.hom", header=TRUE)
+ghp_hom<-read.table("data/ROH/GHP_500K_1het.hom", header=TRUE)
+ll_hom<-read.table("data/ROH/ILL_500K_1het.hom", header=TRUE)
+ul_hom<-read.table("data/ROH/IUL_500K_1het.hom", header=TRUE)
 
 # remove the sex chromosome
 c_hom<-c_hom[!(c_hom$CHR==12),]
@@ -163,7 +163,7 @@ legend_b <- get_legend(
           legend.box.margin = margin(0, 10, 0, 20))
 )
 
-pdf('figures/FIBR_ROH_final_lines.pdf',width=8,height=8)
+pdf('figures/ROH/FIBR_ROH_final_lines.pdf',width=8,height=8)
 plot_grid(freqs,sums,legend_b, rel_heights = c(1,1,0.2),ncol=1)
 dev.off()
 

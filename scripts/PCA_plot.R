@@ -9,13 +9,14 @@ library(cowplot)
 eigenvec_table <- read.table('data/PCA/FIBR_PCA_noGL.eigenvec', header = TRUE)
 eigenvec_table <- eigenvec_table[-2]
 eigenvec_table <- eigenvec_table[-1]
+# provide the population names in the order they appear in your vcf (alphabetical)
 eigenvec_table$Populations <- as.character(c(rep("IC (intro)", 15), rep("Guanapo (HP)", 19), rep("ILL (intro)", 13), rep("IT (intro)", 14), rep("IUL (intro)", 15)))
 
 # set the colour scheme per population
 palette<-(c(rep("#088da5"),rep("#dd3497"),rep("#fa9fb5"),rep("#756bb1"),rep("#bcbddc")))
 
 # read in the eigenvalues and calculate the percentages
-eigenval <- read.table('PCA/data/FIBR_PCA_noGL.eigenval', header = F)
+eigenval <- read.table('data/PCA/FIBR_PCA_noGL.eigenval', header = F)
 percentage <- round(eigenval$V1/sum(eigenval$V1)*100,2)
 percentage <- paste(colnames(eigenvec_table),"(",paste(as.character(percentage),"%",")",sep=""))
 
@@ -40,7 +41,7 @@ p1<-ggplot(eigenvec_table,aes(x=PC1,y=PC2,color=Populations)) +
         legend.text = element_text(size=20),
         axis.text = element_text(size=20),
         axis.title = element_text(size=20)) +
-  scale_color_manual(values=palette)+
+  scale_colour_manual(values=c('Guanapo (HP)'="#088da5",'IC (intro)'="#756BB1",'IT (intro)'="#bcbddc",'ILL (intro)'="#dd3497",'IUL (intro)'="#fa9fb5"))+
   stat_ellipse(level=0.95,show.legend = F) +
   xlab(percentage[1]) +
   ylab(percentage[2]) +
@@ -60,7 +61,7 @@ p2<-ggplot(eigenvec_table,aes(x=PC1,y=PC3,color=Populations)) +
         legend.text = element_text(size=20),
         axis.text = element_text(size=20),
         axis.title = element_text(size=20)) +
-  scale_color_manual(values=palette)+
+  scale_colour_manual(values=c('Guanapo (HP)'="#088da5",'IC (intro)'="#756BB1",'IT (intro)'="#bcbddc",'ILL (intro)'="#dd3497",'IUL (intro)'="#fa9fb5"))+
   stat_ellipse(level=0.95,show.legend = F) +
   xlab(percentage[1]) +
   ylab(percentage[3]) +
@@ -80,7 +81,7 @@ p3<-ggplot(eigenvec_table,aes(x=PC2,y=PC3,color=Populations)) +
         legend.text = element_text(size=20),
         axis.text = element_text(size=20),
         axis.title = element_text(size=20)) +
-  scale_color_manual(values=palette)+
+  scale_colour_manual(values=c('Guanapo (HP)'="#088da5",'IC (intro)'="#756BB1",'IT (intro)'="#bcbddc",'ILL (intro)'="#dd3497",'IUL (intro)'="#fa9fb5"))+
   stat_ellipse(level=0.95,show.legend = F) +
   xlab(percentage[2]) +
   ylab(percentage[3]) +

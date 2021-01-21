@@ -1,3 +1,4 @@
+# this script calculates various allele frequency 'stats'
 library(data.table)
 ### mean/median/min-max of absolute AF changes
 gh<-fread('output/allele_freq/GHP_minor.txt',header=T)
@@ -36,10 +37,10 @@ colnames(af_mat)<-c("Population","Fixed GHP/LP","GHP MAF/fixed LP","Unchanged MA
 af_mat$Population<-c("ILL","IUL","IC","IT","GLP")
 
 # fill in the mean and median absolute AF changes
-af_mat$`mean |dAF|`<-c(mean(ghll2$absDAF),mean(ghul2$absDAF),mean(ghc2$absDAF),
-                       mean(ght2$absDAF),mean(ghgl2$absDAF))
-af_mat$`median |dAF|`<-c(median(ghll2$absDAF),median(ghul2$absDAF),median(ghc2$absDAF),
-                         median(ght2$absDAF),median(ghgl2$absDAF))
+af_mat$`mean |dAF|`<-c(round(mean(ghll2$absDAF),digits=3),round(mean(ghul2$absDAF),digits=3),round(mean(ghc2$absDAF),digits=3),
+                       round(mean(ght2$absDAF),digits=3),round(mean(ghgl2$absDAF),digits=3))
+af_mat$`median |dAF|`<-c(round(median(ghll2$absDAF),digits=3),round(median(ghul2$absDAF),digits=3),round(median(ghc2$absDAF),digits=3),
+                         round(median(ght2$absDAF),digits=3),round(median(ghgl2$absDAF),digits=3))
 
 # fill in the min & max
 ll_min<-paste0(min(ghll2$absDAF),'-',round(max(ghll2$absDAF),digits=3))
@@ -176,4 +177,4 @@ af_mat$`GHP MAF/fixed LP`<-c(ll_min_fix,ul_min_fix,c_min_fix,t_min_fix,gl_min_fi
 af_mat$`Fixed GHP/LP`<-c(ll_fixed,ul_fixed,c_fixed,t_fixed,gl_fixed)
 
 
-write.table(af_mat, "output/allele_freq/AF_fixed.txt", quote = F, sep = '\t', row.names = F)
+write.table(af_mat, "output/allele_freq/AF_fixed_table.txt", quote = F, sep = '\t', row.names = F)
