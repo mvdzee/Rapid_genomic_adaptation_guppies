@@ -146,10 +146,7 @@ On the HPC, in the folder with the XP-EHH outputs, run the following to concaten
 ```
 for POP in C T LL UL; 
    do     
-   for file in GH_${POP}*out.norm;
-      do
-      awk 'FNR==1 && NR!=1 { while (/^id+/) getline; } 1 {print}' GH_${POP}*out.norm > GH_${POP}_XPEHH.txt;
-      done;
+   awk 'FNR==1 && NR!=1 { while (/^id+/) getline; } 1 {print}' GH_${POP}*out.norm > GH_${POP}_XPEHH.txt;
    done
  ```  
  
@@ -162,10 +159,7 @@ On the HPC, in the folder with the iHH12 outputs, run the following to concatena
 ```
 for POP in GH C T LL UL; 
    do     
-   for file in ${POP}*out.norm;
-      do
-      awk 'FNR==1 && NR!=1 { while (/^id+/) getline; } 1 {print}' ${POP}*out.norm > ${POP}_iHH12.txt;
-      done;
+   awk 'FNR==1 && NR!=1 { while (/^id+/) getline; } 1 {print}' ${POP}*out.norm > ${POP}_iHH12.txt;
    done
  ```  
  
