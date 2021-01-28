@@ -2,7 +2,9 @@
 To accompany FIBR paper
 
 This repository contains various scripts that were used for population genomics analyses in  
-**Rapid genomic adaptation in recently introduced populations of Trinidadian guppies (Poecilia reticulata)**
+**Rapid genomic adaptation in recently introduced populations of Trinidadian guppies (Poecilia reticulata)**  
+
+This repository is written with our VCF in mind. If you want to use it for your own analyses, please check and change population/sample names and size where necessary.  
 
 Raw reads were processed with a set of in-house scripts published in Fraser et al. (2020) - Improved reference genome uncovers novel sex-linked regions in the guppy (Poecilia reticulata)
 
@@ -12,7 +14,7 @@ For selscan and Runs of Homozygosity, VCFs were phased using the following scrip
 ```phase_vcf.sh```  
 For this you will need the final filtered bam files.  
 
-Download the repo, it should have the following folders:
+The scripts are set up to work in a folder that consists of the following sub-folders (the repository consists of the same folders):
  1. scripts (this is where the scripts go)  
 
  2. data  
