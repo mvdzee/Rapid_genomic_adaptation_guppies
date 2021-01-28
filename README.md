@@ -62,12 +62,9 @@ On the HPC, in the folder with the outputs, run the following to concatenate the
 ```
 for stat in fst pi td; 
    do     
-   for file in *${stat}*out;
-      do
-      awk 'FNR==1 && NR!=1 { while (/^chrom+/) getline; } 1 {print}' *${stat}*out > FIBR_${stat}.txt;
-      done;
+   awk 'FNR==1 && NR!=1 { while (/^chrom+/) getline; } 1 {print}' *${stat}*out > FIBR_${stat}.txt;
    done
- ```  
+```  
  Now move the output files to the main folder data/popgenome  
  
  To get FST means and medians run: ```fst_global.R```  
