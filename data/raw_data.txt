@@ -1,1 +1,2 @@
 Folder where all the raw data files go
+And where the final VCF will go
