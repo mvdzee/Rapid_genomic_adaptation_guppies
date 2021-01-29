@@ -18,8 +18,8 @@ chr_res <- lapply(chrs,function(chr){
   
   # Make the input
   system(paste0("bcftools view -r ",chr," ",test_vcf," > output/tmp.vcf"))
-  vcf_in <- read.vcfR("output/tmp.vcf")
-  system("rm -f output/tmp.vcf")
+  vcf_in <- read.vcfR("output/AF_vapeR/tmp.vcf")
+  system("rm -f output/AF_vapeR/tmp.vcf")
   
   # Make the popmaps
   test_popmap <- data.frame(inds=colnames(vcf_in@gt)[2:ncol(vcf_in@gt)])
@@ -51,7 +51,7 @@ chr_res <- lapply(chrs,function(chr){
   
   # Save both
   saveRDS(list(AF_input,null_input,eigen_res,null_cutoffs),
-          paste0("output/FIBR_",chr,"_AF_eigen_res_windsize_",window_snps,".rds"))
+          paste0("output/AF_vapeR/FIBR_",chr,"_AF_eigen_res_windsize_",window_snps,".rds"))
   
   # Return
   # return(list(AF_input,eigen_res,null_cutoffs))
@@ -60,7 +60,7 @@ chr_res <- lapply(chrs,function(chr){
 
 # Read in the rds results if needs be...
 chr_res <- lapply(chrs,function(chr){
-  return(readRDS(paste0("output/FIBR_",chr,"_AF_eigen_res_windsize_",window_snps,".rds")))
+  return(readRDS(paste0("output/AF_vapeR/FIBR_",chr,"_AF_eigen_res_windsize_",window_snps,".rds")))
 })
 # Just get the chr AF_inputs
 AF_input_chrs <-  lapply(chr_res,function(x){return(x[[1]])})
@@ -99,32 +99,23 @@ reshape2::melt(sum_nulls) %>%
 test_list <- null_cutoff_list
 genome_figs <- eigenval_plot_genome(eigen_res_list=eigen_res_list_test,
                                     cutoffs=all_null_cutoffs[,3])
-genome_figs$`Eigenvector 1`
-genome_figs$`Eigenvector 2`
-genome_figs$`Eigenvector 3`
-genome_figs$`Eigenvector 4`
+#genome_figs$`Eigenvector 1`
+#genome_figs$`Eigenvector 2`
+#genome_figs$`Eigenvector 3`
+#genome_figs$`Eigenvector 4`
 # Plot together
-pdf("figures/FIBR_genome_99.9CI_200SNPs_grey2.pdf",width=12,height=6)
+pdf("figures/AF_vapeR/FIBR_genome_99.9CI_200SNPs.pdf",width=12,height=6)
 cowplot::plot_grid(genome_figs[[1]] +theme(strip.text = element_blank(),
                                            axis.title.x = element_blank(),plot.title = element_text(size=16),axis.ticks.y=element_line()),
                    genome_figs[[2]] + theme(plot.title = element_text(size=16),axis.ticks.y=element_line()) ,nrow = 2,align = 'v',rel_heights = c(5,6))
 dev.off()
 
-pdf("figures/FIBR_genome_99.9CI_200SNPs_eig1.grey2.pdf",width=12,height=5)
-genome_figs$`Eigenvector 1`
-dev.off()
 # Plot per chr...
 chr_plots <- lapply(chrs,function(chr){
   fig <- eigenval_plot(eigen_res = eigen_res_list_test[[chr]],
                        cutoffs=all_null_cutoffs[,3])
   return(fig)
 })
-
-
-# View our eigenvalue peaks...
-chr_plots[[4]][[1]]+ggtitle("Chr4, Eig1")
-chr_plots[[13]][[1]]+ggtitle("Chr13, Eig1")
-chr_plots[[15]][[1]]+ggtitle("Chr15, Eig1")
 
 # Fetch all our significant windows...
 chr_signif <- lapply(chrs,function(chr){
@@ -136,10 +127,7 @@ chr_signif <- lapply(chrs,function(chr){
 # We want to look at eigenvector 2
 eig1_signif <- na.omit(unlist(lapply(chr_signif,function(chr){return(chr[[1]])})))
 eig2_signif <- na.omit(unlist(lapply(chr_signif,function(chr){return(chr[[2]])})))
-write.table(eig1_signif, "output/FIBR_eig1_outliers_99.9_200SNPs.txt", quote = F, sep = '\t', row.names = F)
-
-# eig3_signif <- unlist(lapply(chr_signif,function(chr){return(chr[[3]])}))
-# eig4_signif <- unlist(lapply(chr_signif,function(chr){return(chr[[4]])}))
+write.table(eig1_signif, "output/AF_vapeR/FIBR_eig1_outliers_99.9_200SNPs.txt", quote = F, sep = '\t', row.names = F)
 
 # Summarise eigenvector 1 windows...
 FIBR_eigenvec1_window_summaries <- data.frame(rbindlist(lapply(eig1_signif,function(wind){
@@ -181,28 +169,6 @@ eig2_A <- lapply(eig2_signif,function(x){
 })
 names(eig2_A) <- eig2_signif
 #################################################################
-# Explore interesting A matrices
-plot_A_matrix <- function(A_matrix,eigs=c(1),cutoff=0.2){
-  plot_dd <- reshape2::melt(A_matrix,id.vars="pos")
-  plot_dd <- plot_dd[plot_dd$variable %in% paste0("Eig",eigs),]
-  ggplot(plot_dd,aes(x=pos,y=value))+
-    geom_point()+
-    theme_bw()+
-    theme(axis.title = element_text(size=18),
-          axis.text = element_text(size=16),
-          axis.text.x = element_text(size=16,angle=30,hjust=1),
-          strip.text = element_text(size=18))+
-    #labs(x="Chromosome 12 BP",y="Loading")+
-    geom_hline(colour="red2",yintercept = 0.2,linetype="dotted")+
-    facet_wrap(~variable,ncol=1,strip.position = "right")
-}
-
-plot_A_matrix(eig1_A[22])
-plot_A_matrix(eig1_A[22])
-summarise_window_parallelism(significant_windows1[1],
-                             eigen_res_out,
-                             loading_cutoff = 0.3,
-                             eigenvector = 1)
 
 
 
