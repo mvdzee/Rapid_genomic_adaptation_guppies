@@ -12,7 +12,7 @@ All \*.sh scripts are written for SLURM based systems. Please change headers and
 
 For selscan and Runs of Homozygosity, VCFs were phased using the following script:  
 ```phase_vcf.sh```  
-For this you will need the final filtered bam files.  
+For this you will need the final filtered bam files in a folder that contains a sub-folder per population.  
 
 The scripts are set up to work in a folder that consists of the following sub-folders (the repository consists of the same folders):
  1. scripts (this is where the scripts go)  
