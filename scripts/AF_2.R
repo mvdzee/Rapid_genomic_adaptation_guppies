@@ -20,21 +20,6 @@ write.table(ghp_minor, "output/allele_freq/GHP_minor.txt", quote = F, sep = '\t'
 # if you nead to read in the minor alleles later
 ghp_minor<-fread("output/allele_freq/GHP_minor.txt",header = T)
 
-glp_af<-fread('data/allele_freq/GLP_AF.txt', header = T)
-glp_af<-glp_af[with(glp_af, order(CHROM,POS)), ]
-### select rows where the REF of GLP == the minor of GHP
-glp_af2<-glp_af[(glp_af$REF==ghp_minor$minor_allele),c(1,2,5,6)]
-colnames(glp_af2)<-c('CHROM','POS','minor_allele','minor_freq')
-### select the rows where 
-glp_af3<-glp_af[(glp_af$ALT==ghp_minor$minor_allele),c(1,2,7,8)]
-colnames(glp_af3)<-c('CHROM','POS','minor_allele','minor_freq')
-glp_minor<-rbind(glp_af2,glp_af3)
-glp_minor<-glp_minor[with(glp_minor, order(CHROM,POS)), ]
-glp_minor$comp<-rep('GLP',nrow(glp_minor))
-write.table(glp_minor, "output/allele_freq/GLP_minor.txt", quote = F, sep = '\t', row.names = F)
-# if you nead to read in the minor alleles later
-glp_minor<-fread("output/allele_freq/GLP_minor.txt",header = T)
-
 ll_af<-fread('data/allele_freq/ILL_AF.txt', header = T)
 ll_af<-ll_af[with(ll_af, order(CHROM,POS)), ]
 ll_af2<-ll_af[(ll_af$REF==ghp_minor$minor_allele),c(1,2,5,6)]
@@ -122,18 +107,10 @@ dT<-dT[,c(2,3,1,4)]
 colnames(dT)<-c('chrom','BP','delta_AF','comp')
 dT$abs_AF<-abs(dT$delta_AF)
 
-dGL <- data.frame(glp_minor$minor_freq - ghp_minor$GHP_minor_FRQ)
-dGL['chrom']<-glp_minor$CHROM
-dGL['BP']<-glp_minor$POS
-dGL['comp']<-rep('GLP',nrow(dGL))
-dGL<-dGL[,c(2,3,1,4)]
-colnames(dGL)<-c('chrom','BP','delta_AF','comp')
-dGL$abs_AF<-abs(dGL$delta_AF)
-
-AF_all<-rbind(dLL,dUL,dC,dT,dGL)
+AF_all<-rbind(dLL,dUL,dC,dT)
 write.table(AF_all, "output/allele_freq/DAF_perSNP.txt", quote = F, sep = '\t', row.names = F)
 
-# Average into windows
+# Average into windows non-absolute windows
 chrs<-unique(AF_all$chrom)
 wind_size<-75000
 
@@ -231,30 +208,7 @@ winds_T<-data.frame(rbindlist(mclapply(chrs,function(x){
   return(sum_AF)
 },mc.cores=3)))
 
-winds_GL<-data.frame(rbindlist(mclapply(chrs,function(x){
-  tmp<-dGL[dGL$chrom == x,]
-  winds1<-seq(0,max(tmp$BP),by=wind_size)
-  winds2<-winds1+wind_size
-  
-  # Summarise for each
-  sum_AF<-data.frame(rbindlist(lapply(1:length(winds2),function(y){
-    tmp2<-tmp[tmp$BP <= winds2[y] & tmp$BP >= winds1[y],]
-    #out<-data.frame(dLL_chr=colMeans(abs(dLL_chr[,3])))
-    out<-data.frame(mean(tmp2$delta_AF))
-    # Tidy
-    #out$river<-rownames(out)
-    out$chrom<-x
-    out$window<-y
-    out$BP1<-as.integer(winds1[y])+1
-    out$BP2<-as.integer(winds2[y])
-    out$comp<-'GLP'
-    colnames(out)<-c('delta_AF','chrom','window','BP1','BP2','comp')
-    return(out)
-  })))
-  return(sum_AF)
-},mc.cores=3)))
-
-delta_AF <-rbind(winds_LL,winds_UL,winds_C,winds_T,winds_GL)
+delta_AF <-rbind(winds_LL,winds_UL,winds_C,winds_T)
 write.table(delta_AF, "output/allele_freq/DAF_NonAbs_windows.txt", quote = F, sep = '\t', row.names = F)
 
 
@@ -352,28 +306,5 @@ winds_T2<-data.frame(rbindlist(mclapply(chrs,function(x){
   return(sum_AF)
 },mc.cores=3)))
 
-winds_GL2<-data.frame(rbindlist(mclapply(chrs,function(x){
-  tmp<-dGL[dGL$chrom == x,]
-  winds1<-seq(0,max(tmp$BP),by=wind_size)
-  winds2<-winds1+wind_size
-  
-  # Summarise for each
-  sum_AF<-data.frame(rbindlist(lapply(1:length(winds2),function(y){
-    tmp2<-tmp[tmp$BP <= winds2[y] & tmp$BP >= winds1[y],]
-    #out<-data.frame(dLL_chr=colMeans(abs(dLL_chr[,3])))
-    out<-data.frame(mean(tmp2$abs_AF))
-    # Tidy
-    #out$river<-rownames(out)
-    out$chrom<-x
-    out$window<-y
-    out$BP1<-as.integer(winds1[y])+1
-    out$BP2<-as.integer(winds2[y])
-    out$comp<-'GLP'
-    colnames(out)<-c('abs_AF','chrom','window','BP1','BP2','comp')
-    return(out)
-  })))
-  return(sum_AF)
-},mc.cores=3)))
-
-delta_AF2 <-rbind(winds_LL2,winds_UL2,winds_C2,winds_T2,winds_GL2)
+delta_AF2 <-rbind(winds_LL2,winds_UL2,winds_C2,winds_T2)
 write.table(delta_AF2, "output/allele_freq/DAF_Abs_windows.txt", quote = F, sep = '\t', row.names = F)
