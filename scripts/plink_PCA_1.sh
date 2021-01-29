@@ -12,26 +12,26 @@
 
 
 # this script prunes the vcf for linkage and calculates the eigenvalues/vectors
-vcfs=~/lustre/start_up_data/FIBR/STAR/data/FIBR_gvcfs
-out=/gpfs/ts0/home/mv323/lustre/start_up_data/people/mijke/STAR_analyses/FIBR/plink/PCA
+VCF=data/FIBR_finalVCF.vcf.gz
+OUT=data/PCA
 
 #### Get the lists of sites that are in LE (prune.in)
-/gpfs/ts0/home/mv323/lustre/bin/plink --vcf $vcfs/FIBR_STAR_pop_SNP.gatk.bi.miss.maf.final.filtered.depth4.recode.vcf.gz \
+/gpfs/ts0/home/mv323/lustre/bin/plink --vcf $VCF \
 --allow-extra-chr \
 --set-missing-var-ids @:# \
 --indep-pairwise 50 5 0.2 \
---out $out/FIBR_PCA
+--out $OUT/FIBR_PCA
 
 ### Extract the LE sits from the oringal vcf
-/gpfs/ts0/home/mv323/lustre/bin/plink --vcf $vcfs/FIBR_STAR_pop_SNP.gatk.bi.miss.maf.final.filtered.depth4.recode.vcf.gz \
---extract $out/FIBR_PCA.prune.in \
+/gpfs/ts0/home/mv323/lustre/bin/plink --vcf $VCF \
+--extract $OUT/FIBR_PCA.prune.in \
 --allow-extra-chr \
 --set-missing-var-ids @:# \
 --recode vcf \
---out $vcfs/pruned/FIBR_PCA_pruned
+--out $OUT/FIBR_PCA_pruned
 
 # ### calculate eigenvecs & vals for the pruned vcf
-/gpfs/ts0/home/mv323/lustre/bin/plink --vcf $vcfs/pruned/FIBR_PCA_pruned.vcf \
+/gpfs/ts0/home/mv323/lustre/bin/plink --vcf $OUT/FIBR_PCA_pruned.vcf \
 --allow-extra-chr \
 --pca header tabs \
---out $out/FIBR_PCA
+--out $OUT/FIBR_PCA
