@@ -15,7 +15,7 @@
 
 module load VCFtools/0.1.16-foss-2018b-Perl-5.28.0
 in_vcf=data/FIBR_STAR_pop_SNP.gatk.bi.miss.maf.final.filtered.depth4.recode.vcf.gz
-out_dir=output/allele_freq
+out_dir=data/allele_freq
 pop_files=data/pop_files
 
 ### getting relatedness and heterozygosity
