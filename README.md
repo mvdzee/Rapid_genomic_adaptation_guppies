@@ -54,10 +54,10 @@ The scripts are set up to work in a folder that consists of the following sub-fo
 ### Popgenome  
 **To obtain raw data**  
 Run these scripts on the HPC to get Fst, nuc.div. and Tajima's D:  
-FST - ```popgenome.R```  
-Tajima'S - ```popgenome.R```  
-Nucleotide diversity (π) - ```popgenome.R```  
-These scripts can be run by this shell:  ```popgenome.sh```  
+FST - ```popgenome_1b.R```  
+Tajima'S - ```popgenome_1b.R```  
+Nucleotide diversity (π) - ```popgenome_1b.R```  
+These scripts can be run by this shell:  ```popgenome_1a.sh```  
 
 **To process the raw data**  
 On the HPC, in the folder with the outputs, run the following to concatenate the files per statistic:  
@@ -69,15 +69,15 @@ for stat in fst pi td;
 ```  
  Now move the output files to the main folder data/popgenome  
  
- To get FST means and medians run: ```fst_global.R```  
- To process Tajima's D run: ```TD_windows.R```  
- To process π run: ```Pi_windows.R```  
+ To get FST means and medians run: ```popgenome_2_fst.R```  
+ To process π run: ```popgenome_3_Pi.R```  
+ To process Tajima's D run: ```popgenome_4_TD.R```  
 
 ### VCFtools  
 **To obtain raw data**  
 Run these scripts on the HPC:  
-Heterozygosity - ```heterozygosity_vcftools.sh```  
-Allele frequency - ```allele_freq_vcftools.sh```  
+Heterozygosity - ```heterozygosity_1.sh```  
+Allele frequency - ```AF_1.sh```  
 
 **To process the data**  
 *Heterozygosity*  
@@ -89,7 +89,7 @@ for POP in GHP GLP IC IT ILL IUL
    done
 ```  
 Now move the output files to the main folder data/heterozygosity 
-and then run: ```Het_windows.R```  
+and then run: ```heterozygosity_2.R```  
 
 *Plot genome-wide stats*  
 To create the plot seen in fig 1D with values of expected heterozygosity, nucleotide diversity and Tajima's D, run  
@@ -104,40 +104,44 @@ for POP in GHP GLP IC IT ILL IUL
    done
 ```  
 Now move the \*.txt files to the main folder data/allele_freq  
-and then run: ```AF_windows.R```  to calculate (absolute) delta allele frequencies.  
+and then run: ```AF_2.R```  to calculate (absolute) delta allele frequencies.  
 
-To calculate fixed/unchanged AFs between GHP and the LP populations run: ```fixed_AFs.R```  
+To calculate fixed/unchanged AFs between GHP and the LP populations run: ```AF_3.R```  
 
 
 ### PCA
 **To obtain the raw data**  
 Run this scripts on the HPC:  
 This script also prunes the VCF for linkage.  
-```plink_PCA.sh```  
+```plink_PCA_1.sh```  
 
 **To plot the PCA**  
 Move the eigenvector and eigenvalue files from the HPC to the local data/PCA
-Then run ```PCA_plot.R``` to create the plot in figure 1B
+Then run ```plink_PCA_2.R``` to create the plot in figure 1B
 
 
 ### Runs of homozygosity
-This analysis requires phased VCFs!!  
+This analysis requires phased VCFs! Make sure to run  
+```phase_vcf.sh```  
+before running the next section.  
 
 **To obtain the raw data**  
 Run these scripts on the HPC to get ROH per individual per population:  
-Runs of homozygosity - ```plink_ROH.sh```  
+Runs of homozygosity - ```plink_ROH_1.sh```  
 
 **To process the raw data**  
 Move the output files from the HPC output folder to the local FIBR_ms/data/ROH
-To process the files and create the plot seen in figure 1C run: ```ROH_plots.R``` 
+To process the files and create the plot seen in figure 1C run: ```plink_ROH_2.R``` 
 
 
 ### Selscan genome scans
-This analysis requires phased VCFs!!  
+This analysis requires phased VCFs! Make sure to run  
+```phase_vcf.sh```  
+before running the next section.  
 
 **To obtain the raw data**  
 Run this scripts on the HPC to get the required plink \*.map files in the correct format as well as XP-EHH and iHH12:  
-Selscan - ```selscan.sh```  
+Selscan - ```selscan_1.sh```  
 
 **To process the raw data**  
 *XP-EHH*  
@@ -150,7 +154,7 @@ for POP in C T LL UL;
  ```  
  
 Move the concatenated file from the HPC to the local data/selscan/xpehh folder.
-In R, run ```XPEHH_outliers.R```  
+In R, run ```selscan_2_xpehh.R```  
 This script will output the outliers per introduced population.  
  
 *iHH12*  
@@ -163,11 +167,11 @@ for POP in GH C T LL UL;
  ```  
  
 Move the concatenated file from the HPC to the local data/selscan/ihh12 folder.
-In R, run ```ihh12_outliers.R```  
+In R, run ```selscan_3_ihh12.R```  
 This script will output the outliers per introduced population.
 
 To plot the selscan results:
-Run the following script: ```selscan_plots.R```  
+Run the following script: ```selscan_4_plots.R```  
 This will create the plots seen in figure 2.  
 
 
@@ -175,7 +179,10 @@ This will create the plots seen in figure 2.
 There will a more detailed description of this software available on \*jims github\*.  
 **To obtain the raw data and process**  
 For this analysis you will need the scripts:  
-```AF_vapeR_chrom.R``` and ```AF_vapeR_functions.R``` in the same folder   
+```AF_vapeR_1.R``` and ```AF_vapeR_functions.R``` in the same folder (the scripts folder)   
 You will also need to have BCFtools installed. For a version without the use of BCFtools please see \*jims github\*.  
 
-In RStudio, run through the ```AF_vapeR_chrom.R``` to get the results and figures.  
+In RStudio, run through the ```AF_vapeR_1.R``` to get the results and figures.  
+
+
+### AF correlations
