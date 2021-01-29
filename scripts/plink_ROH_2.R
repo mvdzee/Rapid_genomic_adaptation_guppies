@@ -12,7 +12,6 @@ library(cowplot)
 ### Read in the data
 c_hom<-read.table("data/ROH/C_500K_1het.hom", header=T)
 t_hom<-read.table("data/ROH/T_500K_1het.hom", header=TRUE)
-#glp_hom<-read.table("data/ROH/GLP_500K_1het.hom", header=TRUE)
 ghp_hom<-read.table("data/ROH/GHP_500K_1het.hom", header=TRUE)
 ll_hom<-read.table("data/ROH/ILL_500K_1het.hom", header=TRUE)
 ul_hom<-read.table("data/ROH/IUL_500K_1het.hom", header=TRUE)
@@ -22,13 +21,11 @@ c_hom<-c_hom[!(c_hom$CHR==12),]
 t_hom<-t_hom[!(t_hom$CHR==12),]
 ll_hom<-ll_hom[!(ll_hom$CHR==12),]
 ul_hom<-ul_hom[!(ul_hom$CHR==12),]
-#glp_hom<-glp_hom[!(glp_hom$CHR==12),]
 ghp_hom<-ghp_hom[!(ghp_hom$CHR==12),]
 
 ### Add population group
 c_hom$POP<-as.factor(rep('IC',nrow(c_hom)))
 t_hom$POP<-as.factor(rep('IT',nrow(t_hom)))
-#glp_hom$POP<-as.factor(rep('GLP',nrow(glp_hom)))
 ghp_hom$POP<-as.factor(rep('GHP',nrow(ghp_hom)))
 ll_hom$POP<-as.factor(rep('ILL',nrow(ll_hom)))
 ul_hom$POP<-as.factor(rep('IUL',nrow(ul_hom)))
@@ -36,7 +33,6 @@ ul_hom$POP<-as.factor(rep('IUL',nrow(ul_hom)))
 ## Add MB column
 c_hom$MB<-c_hom$KB/1000
 t_hom$MB<-t_hom$KB/1000
-#glp_hom$MB<-glp_hom$KB/1000
 ghp_hom$MB<-ghp_hom$KB/1000
 ll_hom$MB<-ll_hom$KB/1000
 ul_hom$MB<-ul_hom$KB/1000
@@ -101,17 +97,17 @@ ul_freq<- aggregate(list(mean_count=ul_freq2$V1), by=list(Category=ul_freq2$`ul_
 ul_freq$POP<-rep('IUL',nrow(ul_freq))
 ul_freq$prop<-ul_freq$mean_count/sum(ul_freq$mean_count)
 
-freq_all_gl<-rbind(ghp_freq,t_freq,c_freq,ul_freq,ll_freq)
-freq_all_gl$POP<-factor(freq_all_gl$POP, levels = c('ILL','IUL','IC','IT','GHP'))
-sum_all_gl<-rbind(ghp_sum,t_sum,c_sum,ul_sum,ll_sum)
-sum_all_gl$POP<-factor(sum_all_gl$POP, levels = c('ILL','IUL','IC','IT','GHP'))
+freq_all<-rbind(ghp_freq,t_freq,c_freq,ul_freq,ll_freq)
+freq_all$POP<-factor(freq_all_gl$POP, levels = c('ILL','IUL','IC','IT','GHP'))
+sum_all<-rbind(ghp_sum,t_sum,c_sum,ul_sum,ll_sum)
+sum_all$POP<-factor(sum_all_gl$POP, levels = c('ILL','IUL','IC','IT','GHP'))
 
-write.table(freq_all_gl,"output/ROH/freq_of_ROH_auto_500K.txt", quote = F, sep = '\t', row.names = F)
-write.table(sum_all_gl,"output/ROH/sum_of_ROH_auto_500K.txt", quote = F, sep = '\t', row.names = F)
+write.table(freq_all,"output/ROH/freq_of_ROH_auto_500K.txt", quote = F, sep = '\t', row.names = F)
+write.table(sum_all,"output/ROH/sum_of_ROH_auto_500K.txt", quote = F, sep = '\t', row.names = F)
 
 ### plot bars. On x is the size bins. Y = the sum of the ROH's for that bin in each population
 png('figures/ROH/sum_of_ROH_auto_500K_bars.png',width = 800,height = 300)
-sums<-ggplot(data=sum_all_gl, aes(x=POP,y=sum,fill=Category))+
+sums<-ggplot(data=sum_all, aes(x=POP,y=sum,fill=Category))+
   geom_bar(stat="identity",width = 0.9,position=position_dodge2(width = 2, preserve = "single"),color='#238443')+
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
@@ -133,7 +129,7 @@ dev.off()
 
 # plot the nr of ROH
 png('figures/ROH/freqs_of_ROH_auto_500K_bars_line.png',width = 800,height = 300)
-freqs<-ggplot(data=freq_all_gl, aes(x=POP,y=mean_count,fill=Category))+
+freqs<-ggplot(data=freq_all, aes(x=POP,y=mean_count,fill=Category))+
   geom_bar(stat="identity",width = 0.9,position=position_dodge2(width = 2, preserve = "single"),color='#238443')+
   theme_bw() +
   theme(panel.grid.major = element_blank(), 
@@ -176,16 +172,6 @@ nrow(ul_hom)
 nrow(ghp_hom)
 
 # mean Mb in ROH, min length + max length
-c_length<-aggregate(c_hom$MB, by=list(ind=c_hom$IID), FUN=sum)
-c_mean<-mean(c_length$x)
-min(c_hom$MB)
-max(c_hom$MB)
-
-t_length<-aggregate(t_hom$MB, by=list(ind=t_hom$IID), FUN=sum)
-eh_mean<-mean(t_length$x)
-min(t_hom$MB)
-max(t_hom$MB)
-
 ll_length<-aggregate(ll_hom$MB, by=list(ind=ll_hom$IID), FUN=sum)
 tl_mean<-mean(ll_length$x)
 min(ll_hom$MB)
@@ -196,6 +182,16 @@ th_mean<-mean(ul_length$x)
 min(ul_hom$MB)
 max(ul_hom$MB)
 
+c_length<-aggregate(c_hom$MB, by=list(ind=c_hom$IID), FUN=sum)
+c_mean<-mean(c_length$x)
+min(c_hom$MB)
+max(c_hom$MB)
+
+t_length<-aggregate(t_hom$MB, by=list(ind=t_hom$IID), FUN=sum)
+eh_mean<-mean(t_length$x)
+min(t_hom$MB)
+max(t_hom$MB)
+
 ghp_length<-aggregate(ghp_hom$MB, by=list(ind=ghp_hom$IID), FUN=sum)
 gh_mean<-mean(ghp_length$x)
 min(ghp_hom$MB)
@@ -203,6 +199,18 @@ max(ghp_hom$MB)
 
 # calculate the inbreeding coefficient
 ## Froh = SUM(LRroh)/Lauto
+ll_froh<-aggregate(list(Mb=ll_hom$MB), by=list(ind=ll_hom$IID), FUN=sum)
+ll_froh$FROH<-ll_froh$Mb/739.3
+median(ll_froh$FROH)
+min(ll_froh$FROH)
+max(ll_froh$FROH)
+
+ul_froh<-aggregate(list(Mb=ul_hom$MB), by=list(ind=ul_hom$IID), FUN=sum)
+ul_froh$FROH<-ul_froh$Mb/739.3
+median(ul_froh$FROH)
+min(ul_froh$FROH)
+max(ul_froh$FROH)
+
 c_froh<-aggregate(list(Mb=c_hom$MB), by=list(ind=c_hom$IID), FUN=sum)
 c_froh$FROH<-c_froh$Mb/739.3
 mean(c_froh$FROH)
@@ -224,20 +232,4 @@ median(ghp_froh$FROH)
 min(ghp_froh$FROH)
 max(ghp_froh$FROH)
 
-glp_froh<-aggregate(list(Mb=glp_hom$MB), by=list(ind=glp_hom$IID), FUN=sum)
-glp_froh$FROH<-glp_froh$Mb/739.3
-median(glp_froh$FROH)
-min(glp_froh$FROH)
-max(glp_froh$FROH)
 
-ll_froh<-aggregate(list(Mb=ll_hom$MB), by=list(ind=ll_hom$IID), FUN=sum)
-ll_froh$FROH<-ll_froh$Mb/739.3
-median(ll_froh$FROH)
-min(ll_froh$FROH)
-max(ll_froh$FROH)
-
-ul_froh<-aggregate(list(Mb=ul_hom$MB), by=list(ind=ul_hom$IID), FUN=sum)
-ul_froh$FROH<-ul_froh$Mb/739.3
-median(ul_froh$FROH)
-min(ul_froh$FROH)
-max(ul_froh$FROH)
