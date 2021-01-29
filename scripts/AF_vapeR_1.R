@@ -1,9 +1,9 @@
 # Genome-wide Test of Eigen analysis
-source("R/angle_grinder_functions.R")
+source("scripts/AF_vapeR_functions.R")
 library(tidyverse)
 library(ggplot2)
 # Test inputs
-test_vcf <- "data/FIBR_STAR_pop_SNP.gatk.bi.miss.maf.final.filtered.depth4.recode.vcf.gz"
+test_vcf <- "data/FIBR_finalVCF.vcf.gz"
 window_snps <- 200
 CORES <- 2
 permutations <- 1000
