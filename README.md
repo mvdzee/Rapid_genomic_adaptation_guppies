@@ -27,6 +27,8 @@ The scripts are set up to work in a folder that consists of the following sub-fo
     - xpehh  
     - ihh12  
   - AF-vapeR  
+  - pop_files  
+  - phased_vcfs  
 
  3. output  
   - popgenome  
