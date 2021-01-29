@@ -178,22 +178,19 @@ t_xp_all<-read.table('output/selscan/xpehh/GHP_T_norm.xpehh_windows.txt',header 
 ll_xp_all<-read.table('output/selscan/xpehh/GHP_LL_norm.xpehh_windows.txt',header = T)
 ul_xp_all<-read.table('output/selscan/xpehh/GHP_UL_norm.xpehh_windows.txt',header = T)
 
-#gl_xp_all[!is.finite(gl_xp_all$normxpehh),]<-NA
 c_xp_all[!is.finite(c_xp_all$normxpehh),]<-NA
 t_xp_all[!is.finite(t_xp_all$normxpehh),]<-NA
 ll_xp_all[!is.finite(ll_xp_all$normxpehh),]<-NA
 ul_xp_all[!is.finite(ul_xp_all$normxpehh),]<-NA
 
-#g_out2<-na.omit(gl_xp_all[gl_xp_all$normxpehh>2.5,])
+# find the outliers
 c_out2<-na.omit(c_xp_all[c_xp_all$normxpehh>2.5,])
 t_out2<-na.omit(t_xp_all[t_xp_all$normxpehh>2.5,])
 ll_out2<-na.omit(ll_xp_all[ll_xp_all$normxpehh>2.5,])
 ul_out2<-na.omit(ul_xp_all[ul_xp_all$normxpehh>2.5,])
 
-#write.table(g_out2, "output/selscan/xpehh/outliers/GL_outliers_XP.txt", quote = F, sep = '\t', row.names = F)
-write.table(c_out2, "output/selscan/xpehh/outliers/C_outliers_XP.txt", quote = F, sep = '\t', row.names = F)
-write.table(t_out2, "output/selscan/xpehh/outliers/T_outliers_XP.txt", quote = F, sep = '\t', row.names = F)
-write.table(ll_out2, "output/selscan/xpehh/outliers/LL_outliers_XP.txt", quote = F, sep = '\t', row.names = F)
-write.table(ul_out2, "output/selscan/xpehh/outliers/UL_outliers_XP.txt", quote = F, sep = '\t', row.names = F)
-
-
+# write results 
+write.table(c_out2, "output/selscan/xpehh/C_outliers_XP2.5.txt", quote = F, sep = '\t', row.names = F)
+write.table(t_out2, "output/selscan/xpehh/T_outliers_XP2.5.txt", quote = F, sep = '\t', row.names = F)
+write.table(ll_out2, "output/selscan/xpehh/LL_outliers_XP2.5.txt", quote = F, sep = '\t', row.names = F)
+write.table(ul_out2, "output/selscan/xpehh/UL_outliers_XP2.5.txt", quote = F, sep = '\t', row.names = F)
