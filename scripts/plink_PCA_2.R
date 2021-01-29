@@ -30,7 +30,7 @@ for (i in 1:length(pop_order)){
 eigenvec_table$Populations <- factor(eigenvec_table$Populations, levels=pop_order)
 
 # plot PC1 & PC2
-pdf('PCA/figures/FIBR_noGL_pc1_pc2_legend.pdf',width=20, height=8)
+pdf('figures/PCA/FIBR_noGL_pc1_pc2_legend.pdf',width=20, height=8)
 p1<-ggplot(eigenvec_table,aes(x=PC1,y=PC2,color=Populations)) +
   geom_point(size = 4) +
   theme_bw() +
@@ -50,7 +50,7 @@ print(p1)
 dev.off()
 
 # plot PC1 & PC3
-pdf('PCA/figures/FIBR_noGL_pc1_pc3.pdf',width=8, height=6)
+pdf('figures/PCA/FIBR_noGL_pc1_pc3.pdf',width=8, height=6)
 p2<-ggplot(eigenvec_table,aes(x=PC1,y=PC3,color=Populations)) +
   geom_point(size = 4) +
   theme_bw() +
@@ -70,7 +70,7 @@ print(p2)
 dev.off()
 
 # plot PC2 & PC3
-pdf('PCA/figures/FIBR_noGL_pc2_pc3.pdf',width=8, height=6)
+pdf('figures/PCA/FIBR_noGL_pc2_pc3.pdf',width=8, height=6)
 p3<-ggplot(eigenvec_table,aes(x=PC2,y=PC3,color=Populations)) +
   geom_point(size = 4) +
   theme_bw() +
