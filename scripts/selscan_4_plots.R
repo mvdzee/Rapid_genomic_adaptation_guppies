@@ -153,7 +153,7 @@ xp_plot<-ggplot(xp_chr2, aes(x=gen_wnd, y=normxpehh)) +
   )
 xp_plot
 
-pdf('figures/xp_ih_whole_genome_xp2.5_ihh5_new2b.pdf',width = 8, height=11)
+pdf('figures/selscan/xp_ih_whole_genome_xp2.5_ihh5.pdf',width = 8, height=11)
 plot_grid(xp_plot,ihh_plot,ncol=1, align = 'v',labels='AUTO',label_size = 14)
 dev.off()
 
